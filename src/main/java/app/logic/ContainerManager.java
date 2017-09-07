@@ -25,7 +25,7 @@ public class ContainerManager {
 		FormChoosen formChoosen = new FormChoosen(4);
 		//formChoosen.setAirport(0,airports.getAirportNameByCode("HNL"));
 		formChoosen.setAirport(0,"Warsaw");
-		formChoosen.setAirport(2,"Rio de Janeiro");
+		formChoosen.setAirport(2,"Taipei");
     	//formChoosen.setCountry(2,"NZ");
     	FormPossibles formPossibles = container.setRouteLines(formChoosen);
     	System.out.println(formPossibles.toString());

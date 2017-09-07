@@ -10,14 +10,17 @@ public class FormPossibles {
 	private final int size;
 	private List<Set<String>> possiblePorts = new ArrayList<>();
 	private List<Set<String>> possibleCountries = new ArrayList<>();
-	private List<List<String>> possibleZones = new ArrayList<>();
+	private List<Set<String>> possibleZones = new ArrayList<>();
 	private int mileageNeeded;
+	private String zoneStart;
+	private String zoneEnd;
 	
 	public FormPossibles(int size) {
 		this.size=size;
 		for(int i=0 ; i < size; i++ ) {
 			possiblePorts.add(new TreeSet<String>());
 			possibleCountries.add(new TreeSet<String>());
+			possibleZones.add(new TreeSet<String>());
 		}
 	}
 	
@@ -37,11 +40,11 @@ public class FormPossibles {
 		return possibleCountries.get(i);
 	}
 	
-	public void setZones(int i, List<String> zones) {
+	public void setZones(int i, Set<String> zones) {
 		possibleZones.set(i, zones);
 	}
 
-	public List<String> getZones(int i) {
+	public Set<String> getZones(int i) {
 		return possibleZones.get(i);
 	}
 	
@@ -50,7 +53,10 @@ public class FormPossibles {
 	public int getMileageNeeded() { return mileageNeeded;}
 	
 	public String toString() {
-		return possiblePorts.toString() + "\n" + possibleCountries.toString() + "\n" + possibleZones.toString();
+		return possiblePorts.toString() 
+				+ "\n" + possibleCountries.toString() 
+				+ "\n" + possibleZones.toString()
+				+ "\n Mileage:" + getMileageNeeded();
 	}
 }
 

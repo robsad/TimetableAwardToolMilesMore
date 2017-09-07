@@ -61,6 +61,10 @@ public class Airports {
 		return countryByCode.get(getAirportsCountryCode(airport));
 	}
 	
+	public String getcountryByCode(String countryCode) {
+		return countryByCode.get(countryCode);
+	}
+	
 	private void translateAirports(List<AirportsData> airportsData){
 		for (AirportsData airport : airportsData) {
 			airportByCode.put(airport.getCityCode(), airport);
@@ -95,10 +99,19 @@ public class Airports {
 	private boolean isHawaii(AirportsData airport) {
 		double lat = airport.getLat();
 		double lon = airport.getLon();
-		if (((lat>18)&&(lat<23))&&((lon>-160)&&(lon<-154))) return true;
+		if (isHawaiiLat(lat) && isHawaiiLon(lon)) return true;
 		else
 		return false;
 	}
 	
+	private boolean isHawaiiLat(double lat) {
+		if ((lat>18)&&(lat<23)) return true;
+		else return false;
+	}
+	
+	private boolean isHawaiiLon(double lon) {
+		if ((lon>-160)&&(lon<-154)) return true;
+		else return false;
+	}
 }
 

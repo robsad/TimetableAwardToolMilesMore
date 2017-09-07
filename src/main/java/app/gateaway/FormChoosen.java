@@ -7,19 +7,20 @@ import java.util.TreeSet;
 
 public class FormChoosen {
 
+	static final String ALL = "All";
 	private int size;
 	private List<String> choosenAirports = new ArrayList<>();
 	private List<String> choosenCountries = new ArrayList<>();
 	private List<Set<String>> zoneCalculation;
-	private String startZone = "All";
-	private String endZone = "All";
+	private String startZone = ALL;
+	private String endZone = ALL;
 	private boolean zoneRule = true;
 	
 	public FormChoosen(int size) {
 		this.size = size;
 		for(int i=0 ; i < size; i++ ) {
-			choosenAirports.add("All");
-			choosenCountries.add("All");
+			choosenAirports.add(ALL);
+			choosenCountries.add(ALL);
 		}
 	}
 	

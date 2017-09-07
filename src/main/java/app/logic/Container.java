@@ -18,6 +18,7 @@ import app.gateaway.FormPossibles;
 
 public class Container  {
 	
+	static final String ALL = "All";
 	private List<RouteLine> routeLines = new ArrayList<>();
 	private IRulesModule rulesModule;
 	private Airports airports;
@@ -34,37 +35,49 @@ public class Container  {
 		IZoneFilter zonefilter = rulesModule.getZoneFilterInstance();
 		List<Set<String>> zoneCalculation = zonefilter.calculateZones(formChoosen);
 		formChoosen.setZoneCalculation(zoneCalculation);
-		System.out.println(zoneCalculation);
 		for(int i=0 ; i < size; i++ ) {
 			routeLines.add(new RouteLine(size,i,formChoosen,rulesModule));
 		}
-		System.out.println("RouteLines created");
-		return recalculate();
+		FormPossibles formPossibles = recalculate();
+		int mileageNeeded = rulesModule.getMilesNeeded(zonefilter.getStartZone(),zonefilter.getEndZone());
+		formPossibles.setMileageNeeded(mileageNeeded);
+		return formPossibles;
 	}
 	
 	private FormPossibles recalculate() {
 		FormPossibles formPossibles = new FormPossibles(size);
 		for(int i=0 ; i < size; i++ ) {
-			formPossibles.setAirports(i, intersection(i));
-			System.out.println("nr: "+i+" inter: "+formPossibles.getAirports(i));
-			formPossibles.setCountries(i, calculatePossibleCountry(i, intersection(i)));
+			Set<String> intersection = intersection(i);
+			formPossibles.setAirports(i, intersection);
+			//System.out.println("nr: "+i+" inter: "+formPossibles.getAirports(i));
+			Set<String> possibleCoutries = calculatePossibleCountry(intersection);
+			formPossibles.setCountries(i, possibleCoutries);
+			formPossibles.setZones(i, calculatePossibleZones(possibleCoutries));
 		}
 		return formPossibles;
 	}
 	
-	private Set<String> calculatePossibleCountry(int i, Set<String> possiblePorts) {
+	private Set<String> calculatePossibleCountry(Set<String> possiblePorts) {
 	Set<String> possibleCountries = new TreeSet<String>();
 	for(String port : possiblePorts) {
-		if (port.equals("All")) {
-			possibleCountries.add("All");
+		if (port.equals(ALL)) {
+			possibleCountries.add(ALL);
 		} else {
 		possibleCountries.add(airports.getAirportsCountryName(port));
 		}
 	}
 	if (possibleCountries.isEmpty()) {
-		possibleCountries.add("All");
+		possibleCountries.add(ALL);
 	}
 	return possibleCountries;
+	}
+	
+	private Set<String> calculatePossibleZones(Set<String> possibleCoutries) {
+	Set<String> possibleZones = new TreeSet<String>();
+	for(String country : possibleCoutries) {
+		possibleZones.add(rulesModule.getCountryNameZone(country));
+	}
+	return possibleZones;
 	}
 	
 	private Set<String> intersection(int i) {
@@ -82,7 +95,7 @@ public class Container  {
 			}	
 		}
 		if (intersection.isEmpty()) {
-			intersection.add("All");
+			intersection.add(ALL);
 		}
 		return intersection;
 	}
