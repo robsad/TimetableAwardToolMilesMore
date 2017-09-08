@@ -24,10 +24,10 @@ public class ContainerManager {
 		container = new Container(4, rulesModule);
 		FormChoosen formChoosen = new FormChoosen(4);
 		//formChoosen.setAirport(0,airports.getAirportNameByCode("HNL"));
-		formChoosen.setAirport(0,"Warsaw");
-		formChoosen.setAirport(2,"Taipei");
+		formChoosen.setAirport(0,"Poznan");
+		//formChoosen.setAirport(2,"Taipei");
     	//formChoosen.setCountry(2,"NZ");
-    	FormPossibles formPossibles = container.setRouteLines(formChoosen);
+    	FormPossibles formPossibles = container.calculateRoutes(formChoosen);
     	System.out.println(formPossibles.toString());
     	
 	}

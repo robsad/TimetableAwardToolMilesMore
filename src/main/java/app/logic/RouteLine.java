@@ -41,7 +41,6 @@ public class RouteLine {
 			routeLineList.add(new TreeSet<String>());
 		}
 		Set<String> initAirportNames = getInitAirports();
-		//System.out.println("routeNr: " + routeNr + " init: " + initAirportNames);  //komentarz
 		if (!initAirportNames.isEmpty()) {
 			calculate(initAirportNames);
 		}	
@@ -59,12 +58,10 @@ public class RouteLine {
 			if (positionR<size) zoneFilter(positionR,newNeighbours);
 			neighbours = newNeighbours;
 		}
-		//System.out.println("routeLineList: " + routeLineList);  //komentarz
 	}
 	
 	public Set<String> calculateNeighbors(Set<String> initAirportNames) {
 		Set<String> neighbors = new TreeSet<>();
-		//System.out.println(initAirportNames);      //komentarz
 		for(String initAirportName : initAirportNames) {
 			String initAirportCode = airports.getAirportCodeByName(initAirportName);
 			List<Connection> connections = connectionsByOrigin.get(initAirportCode);
@@ -75,7 +72,6 @@ public class RouteLine {
 				}
 			}
 		}
-		//System.out.println(initAirportNames + " " + neighbors);  //komentarz
 		return neighbors;
 	}
 	
@@ -116,6 +112,7 @@ public class RouteLine {
 		return Collections.emptySet();
 	}
 	
+	@Override
 	public String toString() {
 		return routeLineList.toString();
 	}

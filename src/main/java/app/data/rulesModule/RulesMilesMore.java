@@ -64,7 +64,6 @@ public class RulesMilesMore implements IRulesModule {
 	
 	public String getAirportZone(String airport) {
 		String countryCode = airports.getAirportsCountryCode(airport);
-		//System.out.println("airport: "+airport+" countryCode: "+countryCode);
 		return zoneByCountry.get(countryCode);
 	}
 	
