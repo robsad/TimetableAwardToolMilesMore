@@ -34,6 +34,7 @@ public class Container {
 		IZoneFilter zonefilter = rulesModule.getZoneFilterInstance();
 		List<Set<String>> zoneCalculated = zonefilter
 				.calculateZones(formChoosen);
+		System.out.println(zoneCalculated);
 		formChoosen.setZoneCalculation(zoneCalculated);
 		setRouteLines(formChoosen);
 		FormPossibles formPossibles = calculateRoutesIntersections();

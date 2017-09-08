@@ -25,7 +25,7 @@ public class MMZoneFilter implements IZoneFilter {
 	public List<Set<String>> calculateZones(FormChoosen formChoosen) {
 		this.size = formChoosen.getSize();
 		this.startZone = formChoosen.getStartZone();
-		this.endZone = formChoosen.getStartZone();
+		this.endZone = formChoosen.getEndZone();
 		this.formChoosen = formChoosen;
 		zoneScan();
 		return zoneCalculation;
@@ -60,7 +60,6 @@ public class MMZoneFilter implements IZoneFilter {
 					zoneEnd = zoneNow;
 				}
 			}
-			System.out.println("i: " + i + " zoneNow: " + zoneNow);
 		}
 		if (numberOfZones > 1) {
 			makeZoneMap(endOfStartZone, zoneStart, startOfEndZone, zoneEnd);
@@ -79,9 +78,10 @@ public class MMZoneFilter implements IZoneFilter {
 	}
 
 	private String whatZone(int i) {
+		
 		if ((i == 0) && (!startZone.equals(ALL)))
 			return startZone;
-		if ((i == size) && (!endZone.equals(ALL)))
+		if ((i == size-1) && (!endZone.equals(ALL)))
 			return endZone;
 		String countryCode = formChoosen.getCountry(i);
 		if (!countryCode.equals(ALL)) {

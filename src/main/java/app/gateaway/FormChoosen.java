@@ -78,7 +78,8 @@ public class FormChoosen {
 	
 	public String toString() {
 		return "choosenAirports: " + choosenAirports.toString() +
-				"choosenCountries" + choosenCountries.toString();	 
+				"choosenCountries" + choosenCountries.toString() +
+				 " Start: " + startZone + " End: " + endZone;	 
 	}
 	
 }

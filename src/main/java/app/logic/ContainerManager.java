@@ -16,7 +16,6 @@ public class ContainerManager {
 	
 	public ContainerManager(IRulesModule rulesModule){
 		this.rulesModule = rulesModule;
-		System.out.println("ContainerManager created");
 	}
 	
 	public void containerInterface() {
@@ -25,6 +24,7 @@ public class ContainerManager {
 		FormChoosen formChoosen = new FormChoosen(4);
 		//formChoosen.setAirport(0,airports.getAirportNameByCode("HNL"));
 		formChoosen.setAirport(0,"Poznan");
+		formChoosen.setEndZone("South America");
 		//formChoosen.setAirport(2,"Taipei");
     	//formChoosen.setCountry(2,"NZ");
     	FormPossibles formPossibles = container.calculateRoutes(formChoosen);
