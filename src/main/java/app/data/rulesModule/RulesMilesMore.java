@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import app.Connection;
 import app.data.Airports;
@@ -47,6 +49,21 @@ public class RulesMilesMore implements IRulesModule {
 	
 	public List<String> getCountryNamesByZone(String zone) {
 		return countriesByZone.get(zone);
+	}
+	
+	public Set<String> getAirlines(String originCity, String destCity) {
+		System.out.println(originCity + " -> " + destCity);
+		String originCode = airports.getAirportCodeByName(originCity);
+		String destCode = airports.getAirportCodeByName(destCity);
+		Set<String> airlines = new TreeSet<String>();
+		List<Connection> connections = connectionsByOrigin.get(originCode);
+		for(Connection connection : connections) {
+			if (connection.getDestination().equals(destCode)) {
+				airlines.add(connection.getAirlinecode());
+			}	
+		}
+		System.out.println(airlines);
+		return airlines;
 	}
 	
 	public Airports getAirports() {
