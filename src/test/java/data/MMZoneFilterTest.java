@@ -9,7 +9,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import app.AirportsData;
+import app.data.entities.AirportsData;
 import app.data.rulesModule.MMZoneFilter;
 import app.gateaway.FormChoosen;
 

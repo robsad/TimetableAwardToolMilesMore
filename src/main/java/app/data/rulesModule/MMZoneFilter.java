@@ -16,9 +16,9 @@ public class MMZoneFilter implements IZoneFilter {
 	private IRulesModule rulesModule;
 	private String startZone;
 	private String endZone;
-	private List<Set<String>> zoneCalculation = new ArrayList<>();
-
-	public MMZoneFilter(IRulesModule rulesModule) {
+	private List<Set<String>> zoneCalculation = new ArrayList<Set<String>>(Collections.<Set<String>>emptyList());
+	
+	public MMZoneFilter (IRulesModule rulesModule) {
 		this.rulesModule = rulesModule;
 	}
 
@@ -78,14 +78,13 @@ public class MMZoneFilter implements IZoneFilter {
 	}
 
 	private String whatZone(int i) {
-		
 		if ((i == 0) && (!startZone.equals(ALL)))
 			return startZone;
 		if ((i == size-1) && (!endZone.equals(ALL)))
 			return endZone;
-		String countryCode = formChoosen.getCountry(i);
-		if (!countryCode.equals(ALL)) {
-			return rulesModule.getCountryZone(countryCode);
+		String countryName = formChoosen.getCountry(i);
+		if (!countryName.equals(ALL)) {
+			return rulesModule.getCountryNameZone(countryName);
 		}
 		String airportName = formChoosen.getAirport(i);
 		if (!airportName.equals(ALL)) {
@@ -95,7 +94,7 @@ public class MMZoneFilter implements IZoneFilter {
 	}
 
 	private void makeZoneMap(int start, String startZone, int end,
-			String endZone) {
+							 String endZone) {
 		Set<String> zonesA = new TreeSet<>();
 		Set<String> zonesB = new TreeSet<>();
 		Set<String> zonesC = new TreeSet<>();

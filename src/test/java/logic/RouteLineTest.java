@@ -17,9 +17,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import app.AirportsData;
-import app.Connection;
 import app.data.Airports;
+import app.data.entities.AirportsData;
+import app.data.entities.Connection;
 import app.logic.RouteLine;
 import junit.framework.TestCase;
 

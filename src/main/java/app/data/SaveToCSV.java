@@ -7,8 +7,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-import app.AirportsData;
-import app.Connection;
+import app.data.entities.AirportsData;
+import app.data.entities.Connection;
 
 public class SaveToCSV {
 

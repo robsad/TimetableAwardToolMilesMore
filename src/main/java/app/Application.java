@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import app.data.*;
+import app.data.entities.AirportsData;
+import app.data.entities.Connection;
 import app.data.rulesModule.IRulesModule;
 import app.data.rulesModule.RulesModuleFactory;
 import app.logic.*;

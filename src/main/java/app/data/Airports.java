@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import app.AirportsData;
+import app.data.entities.AirportsData;
 
 public class Airports {
 
@@ -20,13 +20,12 @@ public class Airports {
 	private Set<String> countries = new TreeSet<>();
 	private Map<String, String> countryByCode = new HashMap<>();
 
-	public Airports(List<AirportsData> airportsData,
-			Map<String, String> countryByCode) {
+	public Airports(List<AirportsData> airportsData, Map<String, String> countryByCode){
 		this.countryByCode = countryByCode;
 		translateAirports(airportsData);
 	}
 
-	public Set<String> getAirportNames() {
+	public Set<String> getAllAirportNames() {
 		return airportNames;
 	}
 
@@ -34,7 +33,9 @@ public class Airports {
 		return countries;
 	}
 
-	public Set<String> getAirportsByCountry(String country) {
+	public Set<String> getAirportsByCountryName(String country) {
+		System.out.println("country: " +  country);
+		System.out.println("return " + namesByCountry.get(country));
 		return namesByCountry.get(country);
 	}
 
@@ -57,16 +58,20 @@ public class Airports {
 	public String getAirportsCountryCode(String airport) {
 		return getAirportByName(airport).getCountryCode();
 	}
+	
+	public Set<String> getAirportsByCountry(String country) {
+		return namesByCountry.get(country);
+	}
 
 	public String getAirportsCountryName(String airport) {
 		return countryByCode.get(getAirportsCountryCode(airport));
 	}
 
-	public String getcountryByCode(String countryCode) {
+	public String getCountryByCode(String countryCode) {
 		return countryByCode.get(countryCode);
 	}
 
-	private void translateAirports(List<AirportsData> airportsData) {
+	private void translateAirports(List<AirportsData> airportsData){
 		for (AirportsData airport : airportsData) {
 			airportByCode.put(airport.getCityCode(), airport);
 			airportByName.put(airport.getCityName(), airport);
@@ -85,7 +90,7 @@ public class Airports {
 		}
 		if (airportsByCountry.containsKey(countryKey)) {
 			airportByCountry = airportsByCountry.get(countryKey);
-			nameByCountry = namesByCountry.get(countryKey);
+			nameByCountry = namesByCountry.get(countryByCode.get(countryKey));
 		} else {
 			airportByCountry = new LinkedList<>();
 			nameByCountry = new TreeSet<>();
@@ -93,7 +98,7 @@ public class Airports {
 		airportByCountry.add(airport);
 		airportsByCountry.put(countryKey, airportByCountry);
 		nameByCountry.add(airport.getCityName());
-		namesByCountry.put(countryKey, nameByCountry);
+		namesByCountry.put(countryByCode.get(countryKey), nameByCountry);
 	}
 
 	private boolean isHawaii(AirportsData airport) {
@@ -118,4 +123,5 @@ public class Airports {
 		else
 			return false;
 	}
+
 }

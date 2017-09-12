@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import app.Connection;
 import app.data.Airports;
+import app.data.entities.Connection;
 
 public interface IRulesModule {
 
@@ -18,5 +18,6 @@ public interface IRulesModule {
 	String getCountryNameZone(String countryName);
 	Airports getAirports();
 	IZoneFilter getZoneFilterInstance();
-	Set<String> getAirlines(String airport, String airport2);
+	Set<String> getAirlines(String originAirport, String destAirport);
+	
 }

@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import app.Connection;
 import app.data.Airports;
+import app.data.entities.Connection;
 
 public class RulesMilesMore implements IRulesModule {
 
@@ -24,31 +24,61 @@ public class RulesMilesMore implements IRulesModule {
 	private Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
 	private Map<String, List<Integer>> milesTable;
 	private Airports airports;
-	
-	public RulesMilesMore(Map<String, List<Connection>> connectionsByOrigin, 
-							Airports airports,
-							List<String> zoneNameList,
-							Map<String, List<String>> countriesByZone, 
-							Map<String, List<Integer>> milesTable
-							) {
+
+	public RulesMilesMore(Map<String, List<Connection>> connectionsByOrigin,
+						  Airports airports,
+						  List<String> zoneNameList,
+						  Map<String, List<String>> countriesByZone,
+						  Map<String, List<Integer>> milesTable
+	) {
 		this.connectionsByOrigin = connectionsByOrigin;
 		this.airports = airports;
 		this.countriesByZone = countriesByZone;
 		this.milesTable = milesTable;
 		this.zoneNameList = zoneNameList;
-		makeZoneByCountryMap(countriesByZone); 
+		makeZoneByCountryMap(countriesByZone);
 	}
-	
+
 	public Map<String, List<Connection>> getConnectionsByOrigin() {
 		return connectionsByOrigin;
 	}
-	
+
 	public List<String> getZoneNameList() {
 		return zoneNameList;
 	}
-	
+
 	public List<String> getCountryNamesByZone(String zone) {
 		return countriesByZone.get(zone);
+	}
+
+	public Airports getAirports() {
+		return airports;
+	}
+
+	public int getMilesNeeded(String originZone, String destZone) {
+		System.out.println(originZone + " " + destZone);
+		if (originZone.equals(ALL)|| destZone.equals(ALL)) return 0;
+		int zoneIndex = zoneNameList.indexOf(destZone);
+		List<Integer> milesNeededList = milesTable.get(originZone);
+		int mileageNeeded = milesNeededList.get(zoneIndex)*500;
+		return mileageNeeded;
+	}
+
+	public String getAirportZone(String airport) {
+		String countryCode = airports.getAirportsCountryCode(airport);
+		return zoneByCountry.get(countryCode);
+	}
+
+	public String getCountryZone(String countryCode) {
+		return zoneByCountry.get(countryCode);
+	}
+
+	public String getCountryNameZone(String countryName) {
+		return zoneByCountryName.get(countryName);
+	}
+
+	public IZoneFilter getZoneFilterInstance() {
+		return new MMZoneFilter(this);
 	}
 	
 	public Set<String> getAirlines(String originCity, String destCity) {
@@ -64,48 +94,17 @@ public class RulesMilesMore implements IRulesModule {
 		}
 		System.out.println(airlines);
 		return airlines;
-	}
-	
-	public Airports getAirports() {
-		return airports;
-	}
-	
-	public int getMilesNeeded(String originZone, String destZone) {
-		System.out.println(originZone + " " + destZone);
-		if (originZone.equals(ALL)|| destZone.equals(ALL)) return 0;
-		int zoneIndex = zoneNameList.indexOf(destZone);
-		List<Integer> milesNeededList = milesTable.get(originZone);
-		int mileageNeeded = milesNeededList.get(zoneIndex)*500;
-		return mileageNeeded;
-	}
-	
-	public String getAirportZone(String airport) {
-		String countryCode = airports.getAirportsCountryCode(airport);
-		return zoneByCountry.get(countryCode);
-	}
-	
-	public String getCountryZone(String countryCode) {
-		return zoneByCountry.get(countryCode);
-	}
-	
-	public String getCountryNameZone(String countryName) {
-		return zoneByCountryName.get(countryName);
-	}
+}
 
-	public IZoneFilter getZoneFilterInstance() {
-		return new MMZoneFilter(this);
-	}
-	
-	private void makeZoneByCountryMap(Map<String, List<String>> countriesByZone) {	
+	private void makeZoneByCountryMap(Map<String, List<String>> countriesByZone) {
 		for (String key : countriesByZone.keySet()) {
 			List<String> countries = countriesByZone.get(key);
 			for (String country : countries) {
 				zoneByCountry.put(country, key);
-				zoneByCountryName.put(airports.getcountryByCode(country), key);
+				zoneByCountryName.put(airports.getCountryByCode(country), key);
 			}
 		}
 	}
-	
 }
 
 

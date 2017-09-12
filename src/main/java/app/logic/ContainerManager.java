@@ -23,15 +23,17 @@ public class ContainerManager {
 		container = new Container(4, rulesModule);
 		FormChoosen formChoosen = new FormChoosen(4);
 		//formChoosen.setAirport(0,airports.getAirportNameByCode("HNL"));
-		formChoosen.setAirport(0,"Frankfurt");
-		formChoosen.setAirport(1,"Tokyo");
+		formChoosen.setAirport(0,"Warsaw");
+		//formChoosen.setAirport(1,"Tokyo");
 		//formChoosen.setStartZone("Europe");
 		//formChoosen.setEndZone("South America");
-		formChoosen.setAirport(2,"Seoul");
-    	//formChoosen.setCountry(2,"NZ");
+		//formChoosen.setAirport(2,"Seoul");
+		///formChoosen.setCountry(0,"POLAND");
+		//formChoosen.setCountry(2,"PERU");
+    	formChoosen.setCountry(3,"BOLIVIA");
     	FormPossibles formPossibles = container.calculateRoutes(formChoosen);
     	System.out.println(formPossibles.toString());
-    	System.out.println(rulesModule.getAirlines(formChoosen.getAirport(1),formChoosen.getAirport(2)));
+    	//System.out.println(rulesModule.getAirlines(formChoosen.getAirport(1),formChoosen.getAirport(2)));
 	}
 	
 }

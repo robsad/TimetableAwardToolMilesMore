@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import app.AirportsData;
-import app.Connection;
 import app.data.Airports;
+import app.data.entities.AirportsData;
+import app.data.entities.Connection;
 
 public class RulesModuleFactory {
 
@@ -32,7 +32,6 @@ public class RulesModuleFactory {
 	public void initModule(){
 			loadZonesFromFile();
 			loadTableFromFile();
-			System.out.println("miles table loaded: " + milesTable);
 		}
 	
 	

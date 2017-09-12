@@ -11,8 +11,8 @@ import java.util.TreeSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import app.AirportsData;
 import app.data.Airports;
+import app.data.entities.AirportsData;
 
 public class AirportsTest {
 

@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import app.Connection;
 import app.data.Airports;
+import app.data.entities.Connection;
 import app.data.rulesModule.IRulesModule;
 import app.gateaway.FormChoosen;
 
@@ -36,17 +36,23 @@ public class RouteLine {
 		return routeLineList.get(stopNr);
 	}
 	
-	public void init() {
-		for(int i=0 ; i < size; i++ ) {
-			routeLineList.add(new TreeSet<String>());
-		}
+	public boolean isRouteLineActive() {
+		//System.out.println("!!!routeLineList: "+routeNr+ " "+!routeLineList.isEmpty() + " " + routeLineList);
+		if (routeLineList.isEmpty()) return false;
+		return true;
+	}
+	
+	private void init() {
 		Set<String> initAirportNames = getInitAirports();
 		if (!initAirportNames.isEmpty()) {
+			for(int i=0 ; i < size; i++ ) {
+				routeLineList.add(new TreeSet<String>());
+			}
 			calculate(initAirportNames);
 		}	
 	}
 	
-	public void calculate(Set<String> neighbours) {
+	private void calculate(Set<String> neighbours) {
 		int positionL = routeNr;
 		int positionR = routeNr;
 		routeLineList.set(routeNr,neighbours);
@@ -58,9 +64,15 @@ public class RouteLine {
 			if (positionR<size) zoneFilter(positionR,newNeighbours);
 			neighbours = newNeighbours;
 		}
+		System.out.println("routeNr:"+routeNr);
+		System.out.println("Leg nr: 0 "+routeLineList.get(0));
+		System.out.println("Leg nr: 0 "+routeLineList.get(1));
+		System.out.println("Leg nr: 0 "+routeLineList.get(2));
+		System.out.println("Leg nr: 0 "+routeLineList.get(3));
+		System.out.println("");
 	}
 	
-	public Set<String> calculateNeighbors(Set<String> initAirportNames) {
+	private Set<String> calculateNeighbors(Set<String> initAirportNames) {
 		Set<String> neighbors = new TreeSet<>();
 		for(String initAirportName : initAirportNames) {
 			String initAirportCode = airports.getAirportCodeByName(initAirportName);
