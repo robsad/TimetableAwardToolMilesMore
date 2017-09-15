@@ -44,12 +44,27 @@ public class RouteLine {
 	
 	private void init() {
 		Set<String> initAirportNames = getInitAirports();
+		System.out.println(initAirportNames);
 		if (!initAirportNames.isEmpty()) {
 			for(int i=0 ; i < size; i++ ) {
 				routeLineList.add(new TreeSet<String>());
 			}
 			calculate(initAirportNames);
 		}	
+	}
+	
+	private Set<String> getInitAirports() {
+		String choosenAirport = formChoosen.getAirport(routeNr);
+		Set<String> initAirports = new TreeSet<>();
+		if (!choosenAirport.equals("All")) {	
+			initAirports.add(choosenAirport);
+			return initAirports;
+		}
+		String choosenCountry = formChoosen.getCountry(routeNr);
+		if (!choosenCountry.equals("All")) {
+			return airports.getAirportsByCountry(choosenCountry);
+		}
+		return Collections.emptySet();
 	}
 	
 	private void calculate(Set<String> neighbours) {
@@ -110,19 +125,6 @@ public class RouteLine {
 		return formChoosen.isZoneRule();
 	}
 	
-	private Set<String> getInitAirports() {
-		String choosenAirport = formChoosen.getAirport(routeNr);
-		Set<String> initAirports = new TreeSet<>();
-		if (!choosenAirport.equals("All")) {	
-			initAirports.add(choosenAirport);
-			return initAirports;
-		}
-		String choosenCountry = formChoosen.getCountry(routeNr);
-		if (!choosenCountry.equals("All")) {
-			return airports.getAirportsByCountry(choosenCountry);
-		}
-		return Collections.emptySet();
-	}
 	
 	@Override
 	public String toString() {

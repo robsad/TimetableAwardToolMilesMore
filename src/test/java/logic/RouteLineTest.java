@@ -30,8 +30,6 @@ import junit.framework.TestCase;
 
 public class RouteLineTest extends TestCase {
 	
-
-	private RouteLine routeLine;
 	private IRulesModule milesMoreModule;
 	
 	@Before
@@ -42,11 +40,8 @@ public class RouteLineTest extends TestCase {
 		airportsData.add(new AirportsData("BKK", "Bangkok", "TH", 0, 0));
 		airportsData.add(new AirportsData("MUC", "Munich", "DE", 0, 0));
 		airportsData.add(new AirportsData("FRA", "Frankfurt", "DE", 0, 0));
-		airportsData.add(new AirportsData("SIN", "Singapore", "PL", 0, 0));
+		airportsData.add(new AirportsData("SIN", "Singapore", "SG", 0, 0));
 		Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
-		Set<String> airportNamesBKK = new TreeSet<String>(Arrays.asList("Bangkok"));
-		Set<String> airportNamesPL = new TreeSet<String>(Arrays.asList("Poznan","Warsaw"));
-		Set<String> airportNamesSIN = new TreeSet<String>(Arrays.asList("Singapore"));
 		List<Connection> connectionsPOZ = new ArrayList<>();
 		connectionsPOZ.add(new Connection("WAW",null,"LO"));
 		connectionsPOZ.add(new Connection("FRA",null,"LH"));
@@ -91,8 +86,9 @@ public class RouteLineTest extends TestCase {
 	public void testCalculateNeighbors() {	
 		FormChoosen formChoosen = new FormChoosen(4);
 		formChoosen.setCountry(0,"Thailand");
+		formChoosen.setZoneRule(false);
 		//formChoosen.setAirport(0,"Poznan");
-		routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
+		RouteLine routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
 		Set<String> result = routeLine.getRouteLineStop(1);
 		Set<String> expected = new TreeSet<String>();
 		expected.add("Frankfurt");
@@ -104,8 +100,9 @@ public class RouteLineTest extends TestCase {
 	@Test
 	public void testCalculateNeighbors2() {	
 		FormChoosen formChoosen = new FormChoosen(4);
+		formChoosen.setZoneRule(false);
 		formChoosen.setCountry(0,"Poland");
-		routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
+		RouteLine routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
 		Set<String> result = routeLine.getRouteLineStop(1);
 		Set<String> expected = new TreeSet<String>();
 		expected.add("Frankfurt");
@@ -118,8 +115,9 @@ public class RouteLineTest extends TestCase {
 	@Test
 	public void testRecalculate1() {
 		FormChoosen formChoosen = new FormChoosen(4);
+		formChoosen.setZoneRule(false);
 		formChoosen.setCountry(0,"Singapore");
-		routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
+		RouteLine routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
 		Set<String> result = routeLine.getRouteLineStop(1);
 		Set<String> expected = new TreeSet<String>();
 		expected.add("Bangkok");
