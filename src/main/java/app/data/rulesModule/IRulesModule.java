@@ -18,6 +18,6 @@ public interface IRulesModule {
 	String getCountryNameZone(String countryName);
 	Airports getAirports();
 	IZoneFilter getZoneFilterInstance();
-	Set<String> getAirlines(String originAirport, String destAirport);
+	String getAirlines(String originAirport, String destAirport);
 	
 }

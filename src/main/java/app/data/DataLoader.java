@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import app.data.entities.AirportsData;
 import app.data.entities.Connection;
@@ -53,6 +55,7 @@ public class DataLoader {
 
 	private Map<String, List<Connection>> loadConnectionsFromFile(
 			String filename) {
+		Set<String> airlineCodes = new TreeSet<>();
 		File file = new File(filename);
 		Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
 		String csvLine;
@@ -72,10 +75,12 @@ public class DataLoader {
 							dataArray[3], dataArray[2]));
 					connectionsByOrigin.put(key, newConnections);
 				}
+				airlineCodes.add(dataArray[2]);
 			}
 		} catch (IOException ex) {
 			throw new RuntimeException("Error in reading CSV file: " + ex);
 		}
+		System.out.println(airlineCodes);
 		return connectionsByOrigin;
 	}
 

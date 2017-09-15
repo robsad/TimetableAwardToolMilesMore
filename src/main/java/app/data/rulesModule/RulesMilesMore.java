@@ -23,19 +23,22 @@ public class RulesMilesMore implements IRulesModule {
 	private Map<String, String> zoneByCountryName = new HashMap<>();
 	private Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
 	private Map<String, List<Integer>> milesTable;
+	private Map<String,String> airlines = new HashMap<>();
 	private Airports airports;
 
 	public RulesMilesMore(Map<String, List<Connection>> connectionsByOrigin,
 						  Airports airports,
 						  List<String> zoneNameList,
 						  Map<String, List<String>> countriesByZone,
-						  Map<String, List<Integer>> milesTable
+						  Map<String, List<Integer>> milesTable,
+						  Map<String,String> airlines
 	) {
 		this.connectionsByOrigin = connectionsByOrigin;
 		this.airports = airports;
 		this.countriesByZone = countriesByZone;
 		this.milesTable = milesTable;
 		this.zoneNameList = zoneNameList;
+		this.airlines = airlines;
 		makeZoneByCountryMap(countriesByZone);
 	}
 
@@ -81,19 +84,19 @@ public class RulesMilesMore implements IRulesModule {
 		return new MMZoneFilter(this);
 	}
 	
-	public Set<String> getAirlines(String originCity, String destCity) {
+	public String getAirlines(String originCity, String destCity) {
+		String airline="";
 		System.out.println(originCity + " -> " + destCity);
 		String originCode = airports.getAirportCodeByName(originCity);
 		String destCode = airports.getAirportCodeByName(destCity);
-		Set<String> airlines = new TreeSet<String>();
 		List<Connection> connections = connectionsByOrigin.get(originCode);
 		for(Connection connection : connections) {
 			if (connection.getDestination().equals(destCode)) {
-				airlines.add(connection.getAirlinecode());
+				airline = airlines.get(connection.getAirlinecode());
 			}	
 		}
-		System.out.println(airlines);
-		return airlines;
+		//System.out.println(airline);
+		return airline;
 }
 
 	private void makeZoneByCountryMap(Map<String, List<String>> countriesByZone) {

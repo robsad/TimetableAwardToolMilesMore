@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -26,12 +28,17 @@ public class AirportsTest {
 	airportsData.add(new AirportsData("BKK", "Bangkok", "PL", 0, 0));
 	airportsData.add(new AirportsData("MUC", "Munich", "PL", 0, 0));
 	airportsData.add(new AirportsData("FRA", "Frankfurt", "PL", 0, 0));
-	airports = new Airports(airportsData, null);
+	Map<String, String> countryByCode = new HashMap<>();
+	countryByCode.put("PL","Poland");
+	countryByCode.put("TH","Thailand");
+	countryByCode.put("DE","Germany");
+	countryByCode.put("SG","Singapore");
+	airports = new Airports(airportsData, countryByCode);
 	}
 	
 	@Test
 	public void getAirportNamesTest() {
-		Set<String> result = airports.getAirportNames();
+		Set<String> result = airports.getAllAirportNames();
 		Set<String> expected = new TreeSet<String>(Arrays.asList("Bangkok", "Frankfurt", "Munich", "Poznan", "Warsaw"));
 		assertEquals(expected, result);
 	}

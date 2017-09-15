@@ -23,7 +23,6 @@ public class MMZoneFilterTest {
 		formChoosen = new FormChoosen(4);
 		formChoosen.setAirport(0,"Poznan");
 		formChoosen.setAirport(2,"Tokyo");
-    	//formChoosen.setCountry(3,"NZ");
 		mmZoneFilter = new MMZoneFilter();
 	}
 	

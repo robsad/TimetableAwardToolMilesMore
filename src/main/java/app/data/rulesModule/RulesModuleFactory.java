@@ -21,17 +21,19 @@ public class RulesModuleFactory {
 	private List<String> zoneNameList = new ArrayList<>();
 	private Map<String, List<String>> countriesByZone = new HashMap<>();
 	private Map<String, List<Integer>> milesTable = new HashMap<>();
+	private Map<String,String> airlines = new HashMap<>();
 	
 	public IRulesModule getModule(String moduleName, Airports airports, Map<String, List<Connection>> connectionsByOrigin) {
 		initModule();
 		//if (moduleName.equals("MilesMore") {}
-		IRulesModule rulesModule = new RulesMilesMore(connectionsByOrigin, airports, zoneNameList, countriesByZone, milesTable);
+		IRulesModule rulesModule = new RulesMilesMore(connectionsByOrigin, airports, zoneNameList, countriesByZone, milesTable, airlines);
 		return rulesModule;
 	}
 	
 	public void initModule(){
 			loadZonesFromFile();
 			loadTableFromFile();
+			loadAirlinesFromFile();
 		}
 	
 	
@@ -66,7 +68,18 @@ public class RulesModuleFactory {
 		}
 	}
 
-
+	public void loadAirlinesFromFile() {
+		File file = new File("src/resources/airlines.csv");
+		String csvLine;
+		try (BufferedReader br = new BufferedReader(new FileReader(file.getCanonicalPath()))) {
+			while ((csvLine = br.readLine()) != null) {
+				String[] dataArray = csvLine.split(";");
+				airlines.put(dataArray[0], dataArray[1]);
+			}
+		} catch (IOException ex) {
+			throw new RuntimeException("Error in reading CSV file: " + ex);
+		}
+	}
 
 	
 }

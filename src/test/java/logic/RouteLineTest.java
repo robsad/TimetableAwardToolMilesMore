@@ -20,21 +20,33 @@ import org.junit.Test;
 import app.data.Airports;
 import app.data.entities.AirportsData;
 import app.data.entities.Connection;
+import app.data.rulesModule.IRulesModule;
+import app.data.rulesModule.RulesModuleFactory;
+import app.gateaway.FormChoosen;
+import app.logic.Container;
+import app.logic.ContainerManager;
 import app.logic.RouteLine;
 import junit.framework.TestCase;
 
 public class RouteLineTest extends TestCase {
 	
-	private Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
-	private List<AirportsData> airportsData = new ArrayList<>();
-	private Airports airports;
-	private Set<String> airportNamesBKK = new TreeSet<String>(Arrays.asList("Bangkok"));
-	private Set<String> airportNamesPL = new TreeSet<String>(Arrays.asList("Poznan","Warsaw"));
-	private Set<String> airportNamesSIN = new TreeSet<String>(Arrays.asList("Singapore"));
+
 	private RouteLine routeLine;
+	private IRulesModule milesMoreModule;
 	
 	@Before
 	public void setUp() {
+		List<AirportsData> airportsData = new ArrayList<>();
+		airportsData.add(new AirportsData("POZ", "Poznan", "PL", 0, 0));
+		airportsData.add(new AirportsData("WAW", "Warsaw", "PL", 0, 0));
+		airportsData.add(new AirportsData("BKK", "Bangkok", "TH", 0, 0));
+		airportsData.add(new AirportsData("MUC", "Munich", "DE", 0, 0));
+		airportsData.add(new AirportsData("FRA", "Frankfurt", "DE", 0, 0));
+		airportsData.add(new AirportsData("SIN", "Singapore", "PL", 0, 0));
+		Map<String, List<Connection>> connectionsByOrigin = new HashMap<>();
+		Set<String> airportNamesBKK = new TreeSet<String>(Arrays.asList("Bangkok"));
+		Set<String> airportNamesPL = new TreeSet<String>(Arrays.asList("Poznan","Warsaw"));
+		Set<String> airportNamesSIN = new TreeSet<String>(Arrays.asList("Singapore"));
 		List<Connection> connectionsPOZ = new ArrayList<>();
 		connectionsPOZ.add(new Connection("WAW",null,"LO"));
 		connectionsPOZ.add(new Connection("FRA",null,"LH"));
@@ -64,20 +76,24 @@ public class RouteLineTest extends TestCase {
 		List<Connection> connectionsSIN = new ArrayList<>();
 		connectionsSIN.add(new Connection("BKK",null,"SQ"));
 		connectionsByOrigin.put("SIN",connectionsSIN);
-		airportsData.add(new AirportsData("POZ", "Poznan", "PL", 0, 0));
-		airportsData.add(new AirportsData("WAW", "Warsaw", "PL", 0, 0));
-		airportsData.add(new AirportsData("BKK", "Bangkok", "PL", 0, 0));
-		airportsData.add(new AirportsData("MUC", "Munich", "PL", 0, 0));
-		airportsData.add(new AirportsData("FRA", "Frankfurt", "PL", 0, 0));
-		airportsData.add(new AirportsData("SIN", "Singapore", "PL", 0, 0));
-		this.airports = new Airports(airportsData,connectionsByOrigin);
+		Map<String, String> countryByCode = new HashMap<>();
+		countryByCode.put("PL","Poland");
+		countryByCode.put("TH","Thailand");
+		countryByCode.put("DE","Germany");
+		countryByCode.put("SG","Singapore");
+		Airports airports = new Airports(airportsData,countryByCode);
+		RulesModuleFactory rulesFactory = new RulesModuleFactory();
+    	milesMoreModule = rulesFactory.getModule("MilesMore", airports, connectionsByOrigin);
 	}
 
 	
 	@Test
 	public void testCalculateNeighbors() {	
-		this.routeLine = new RouteLine(4,0,airports,connectionsByOrigin);
-		Set<String> result = routeLine.calculateNeighbors(airportNamesBKK);
+		FormChoosen formChoosen = new FormChoosen(4);
+		formChoosen.setCountry(0,"Thailand");
+		//formChoosen.setAirport(0,"Poznan");
+		routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
+		Set<String> result = routeLine.getRouteLineStop(1);
 		Set<String> expected = new TreeSet<String>();
 		expected.add("Frankfurt");
 		expected.add("Munich");
@@ -87,20 +103,9 @@ public class RouteLineTest extends TestCase {
 	
 	@Test
 	public void testCalculateNeighbors2() {	
-		this.routeLine = new RouteLine(4,0,airports,connectionsByOrigin);
-		Set<String> result = routeLine.calculateNeighbors(airportNamesPL);
-		Set<String> expected = new TreeSet<String>();
-		expected.add("Frankfurt");
-		expected.add("Munich");
-		expected.add("Poznan");
-		expected.add("Warsaw");
-		assertEquals(expected, result);
-	}
-	
-	@Test
-	public void testRecalculate() {
-		this.routeLine = new RouteLine(4,0,airports,connectionsByOrigin);
-		routeLine.recalculate(airportNamesPL);
+		FormChoosen formChoosen = new FormChoosen(4);
+		formChoosen.setCountry(0,"Poland");
+		routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
 		Set<String> result = routeLine.getRouteLineStop(1);
 		Set<String> expected = new TreeSet<String>();
 		expected.add("Frankfurt");
@@ -112,21 +117,13 @@ public class RouteLineTest extends TestCase {
 	
 	@Test
 	public void testRecalculate1() {
-		this.routeLine = new RouteLine(4,1,airports,connectionsByOrigin);
-		routeLine.recalculate(airportNamesSIN);
-		Set<String> result = routeLine.getRouteLineStop(0);
+		FormChoosen formChoosen = new FormChoosen(4);
+		formChoosen.setCountry(0,"Singapore");
+		routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
+		Set<String> result = routeLine.getRouteLineStop(1);
 		Set<String> expected = new TreeSet<String>();
 		expected.add("Bangkok");
 		assertEquals(expected, result);
 	}
 	
-	@Test
-	public void testRecalculate2() {
-		this.routeLine = new RouteLine(3,2,airports,connectionsByOrigin);
-		routeLine.recalculate(airportNamesSIN);
-		Set<String> result = routeLine.getRouteLineStop(2);
-		Set<String> expected = new TreeSet<String>();
-		expected.add("Bangkok");
-		assertEquals(expected, result);
-	}
 }
