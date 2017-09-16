@@ -1,19 +1,14 @@
 package logic;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,13 +18,12 @@ import app.data.entities.Connection;
 import app.data.rulesModule.IRulesModule;
 import app.data.rulesModule.RulesModuleFactory;
 import app.gateaway.FormChoosen;
+import app.gateaway.FormPossibles;
 import app.logic.Container;
-import app.logic.ContainerManager;
 import app.logic.RouteLine;
-import junit.framework.TestCase;
 
-public class RouteLineTest extends TestCase {
-	
+public class ContainerTest {
+
 	private IRulesModule milesMoreModule;
 	
 	@Before
@@ -80,48 +74,62 @@ public class RouteLineTest extends TestCase {
 		RulesModuleFactory rulesFactory = new RulesModuleFactory();
     	milesMoreModule = rulesFactory.getModule("MilesMore", airports, connectionsByOrigin);
 	}
-
 	
 	@Test
-	public void testRouteLine1() {	
+	public void testCalculateRoutes1() {
 		FormChoosen formChoosen = new FormChoosen(4);
-		formChoosen.setCountry(0,"Thailand");
-		formChoosen.setZoneRule(false);
-		//formChoosen.setAirport(0,"Poznan");
-		RouteLine routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
-		Set<String> result = routeLine.getRouteLineStop(1);
-		Set<String> expected = new TreeSet<String>();
-		expected.add("Frankfurt");
-		expected.add("Munich");
-		expected.add("Singapore");
-		assertEquals(expected, result);
-	}
-	
-	@Test
-	public void testRouteLine2() {	
-		FormChoosen formChoosen = new FormChoosen(4);
-		formChoosen.setZoneRule(false);
-		formChoosen.setCountry(0,"Poland");
-		RouteLine routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
-		Set<String> result = routeLine.getRouteLineStop(1);
-		Set<String> expected = new TreeSet<String>();
-		expected.add("Frankfurt");
-		expected.add("Munich");
-		expected.add("Poznan");
-		expected.add("Warsaw");
-		assertEquals(expected, result);
-	}
-	
-	@Test
-	public void testRouteLine3() {
-		FormChoosen formChoosen = new FormChoosen(4);
-		formChoosen.setZoneRule(false);
 		formChoosen.setCountry(0,"Singapore");
-		RouteLine routeLine = new RouteLine(4,0,formChoosen,milesMoreModule);
-		Set<String> result = routeLine.getRouteLineStop(1);
+		formChoosen.setCountry(3,"Poland");
+		formChoosen.setZoneRule(false);
+		Container container = new Container(4,milesMoreModule);
+		FormPossibles formPossibles = container.calculateRoutes(formChoosen);
+		Set<String> result =  formPossibles.getAirports(2);
+		Set<String> expected = new TreeSet<String>();
+		expected.add("Frankfurt");
+		expected.add("Munich");
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testCalculateRoutes2() {
+		Container container = new Container(3,milesMoreModule);
+		FormChoosen formChoosen = container.getFormChoosen();
+		formChoosen.setCountry(0,"Singapore");
+		formChoosen.setCountry(2,"Germany");
+		formChoosen.setZoneRule(false);
+		FormPossibles formPossibles = container.calculateRoutes(formChoosen);
+		Set<String> result =  formPossibles.getAirports(2);
+		Set<String> expected = new TreeSet<String>();
+		expected.add("Frankfurt");
+		expected.add("Munich");
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testCalculateRoutes3() {
+		FormChoosen formChoosen = new FormChoosen(4);
+		formChoosen.setCountry(0,"Singapore");
+		formChoosen.setAirport(3,"Poznan");
+		formChoosen.setZoneRule(false);
+		Container container = new Container(4,milesMoreModule);
+		FormPossibles formPossibles = container.calculateRoutes(formChoosen);
+		Set<String> result =  formPossibles.getAirports(1);
 		Set<String> expected = new TreeSet<String>();
 		expected.add("Bangkok");
 		assertEquals(expected, result);
 	}
 	
+	@Test
+	public void testCalculateRoutes4() {
+		FormChoosen formChoosen = new FormChoosen(4);
+		formChoosen.setCountry(0,"Singapore");
+		formChoosen.setCountry(3,"Poland");
+		formChoosen.setZoneRule(false);
+		Container container = new Container(4,milesMoreModule);
+		FormPossibles formPossibles = container.calculateRoutes(formChoosen);
+		Set<String> result =  formPossibles.getCountries(2);
+		Set<String> expected = new TreeSet<String>();
+		expected.add("Germany");
+		assertEquals(expected, result);
+	}
 }

@@ -80,10 +80,9 @@ public class RouteLine {
 			neighbours = newNeighbours;
 		}
 		System.out.println("routeNr:"+routeNr);
-		System.out.println("Leg nr: 0 "+routeLineList.get(0));
-		System.out.println("Leg nr: 0 "+routeLineList.get(1));
-		System.out.println("Leg nr: 0 "+routeLineList.get(2));
-		System.out.println("Leg nr: 0 "+routeLineList.get(3));
+		for(int i=0 ; i < size; i++ ) {
+			System.out.println("Leg nr: " + i + routeLineList.get(i));
+		}
 		System.out.println("");
 	}
 	

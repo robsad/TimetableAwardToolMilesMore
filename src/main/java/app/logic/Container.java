@@ -29,6 +29,10 @@ public class Container {
 		this.rulesModule = rulesModule;
 		this.airports = rulesModule.getAirports();
 	}
+	
+	public FormChoosen getFormChoosen() {
+		return new FormChoosen(size);
+	}
 
 	public FormPossibles calculateRoutes(FormChoosen formChoosen) {
 		IZoneFilter zonefilter = rulesModule.getZoneFilterInstance();
