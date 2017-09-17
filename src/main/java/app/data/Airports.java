@@ -16,7 +16,7 @@ public class Airports {
 	private Map<String, AirportsData> airportByName = new HashMap<>();
 	private Map<String, List<AirportsData>> airportsByCountry = new HashMap<>();
 	private Map<String, Set<String>> namesByCountry = new HashMap<>();
-	private Set<String> airportNames = new TreeSet<>();
+	private static final Set<String> airportNames = new TreeSet<>();
 	private Set<String> countries = new TreeSet<>();
 	private Map<String, String> countryByCode = new HashMap<>();
 

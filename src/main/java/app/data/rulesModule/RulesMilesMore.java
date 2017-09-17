@@ -84,7 +84,7 @@ public class RulesMilesMore implements IRulesModule {
 		return new MMZoneFilter(this);
 	}
 	
-	public String getAirlines(String originCity, String destCity) {
+	public String getAirline(String originCity, String destCity) {
 		String airline="";
 		System.out.println(originCity + " -> " + destCity);
 		String originCode = airports.getAirportCodeByName(originCity);

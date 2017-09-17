@@ -33,7 +33,7 @@ public class ContainerManager {
     	//formChoosen.setCountry(3,"BOLIVIA");
     	FormPossibles formPossibles = container.calculateRoutes(formChoosen);
     	System.out.println(formPossibles.toString());
-    	System.out.println(rulesModule.getAirlines(formChoosen.getAirport(0),formChoosen.getAirport(1)));
+    	System.out.println(rulesModule.getAirline(formChoosen.getAirport(0),formChoosen.getAirport(1)));
 	}
 	
 }

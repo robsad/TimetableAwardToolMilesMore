@@ -76,6 +76,14 @@ public class FormChoosen {
 		return zoneCalculation.get(i);
 	}
 	
+	public boolean isNothingChoosen() {
+		boolean test = true;
+		for(Set<String> zone : zoneCalculation) {
+			if (!zone.contains("All")) test = false;
+		}
+		return test;
+	}
+	
 	public String toString() {
 		return "choosenAirports: " + choosenAirports.toString() +
 				"choosenCountries" + choosenCountries.toString() +
